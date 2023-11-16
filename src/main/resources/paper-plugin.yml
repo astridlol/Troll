@@ -1,0 +1,5 @@
+name: Troll
+version: '${project.version}'
+main: sh.astrid.troll.Troll
+api-version: '1.19'
+load: STARTUP
