@@ -30,6 +30,12 @@ import static sh.astrid.troll.lib.MiniMessage.color;
 
 @SuppressWarnings("unused")
 public class TrollCommand {
+    private static ItemBuilder getQuestionSkull() {
+        String questionSkull = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWFiNmVhZWMyMzdkOTRjMzY5OWVhZWQ1NjZhNTkyMzg2ZmI2Nzk1MDNhMzA4NWNhNDliM2ExMjk4NDFkY2MxMyJ9fX0=";
+        ItemStack skull = SkullCreator.createSkull(questionSkull);
+        return ItemBuilder.from(skull);
+    }
+
     private static ItemBuilder createUwUModeItem(UUID uuid) {
         Storage storage = Storage.getInstance();
         boolean uwuEnabled = storage.getUwUMode(uuid);
@@ -42,12 +48,6 @@ public class TrollCommand {
                         color("<s>Forces the player to talk in uwu speak"),
                         color("<s>Status: " + statusText)
                 );
-    }
-
-    private static ItemBuilder getQuestionSkull() {
-        String questionSkull = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWFiNmVhZWMyMzdkOTRjMzY5OWVhZWQ1NjZhNTkyMzg2ZmI2Nzk1MDNhMzA4NWNhNDliM2ExMjk4NDFkY2MxMyJ9fX0=";
-        ItemStack skull = SkullCreator.createSkull(questionSkull);
-        return ItemBuilder.from(skull);
     }
 
     private static ItemBuilder createDemoModeItem() {
@@ -149,7 +149,8 @@ public class TrollCommand {
 
         GuiItem explosion = createExplodeItem().asGuiItem(event -> {
             event.setCancelled(true);
-            sender.chat("/troll creeper " + player.getName());
+            player.getLocation().createExplosion(5F);
+            sender.sendMessage(color("<green>Faked a creeper explosion for " + player.getName() + "!"));
             storage.incrementTrollCount(player.getUniqueId(), sender.getUniqueId(), TrollType.EXPLOSION);
         });
 
@@ -200,18 +201,6 @@ public class TrollCommand {
         gui.setItem(4, sounds);
 
         gui.open(sender);
-    }
-
-    @Command("troll creeper")
-    @Description("Fake a creeper explosion")
-    @Permission("op")
-    @SuppressWarnings("unused")
-    public static void creeperExplosion(
-            @Sender Player sender,
-            @Name("player") Player player
-    )  {
-        player.getLocation().createExplosion(5F);
-        sender.sendMessage(color("<green>Faked a creeper explosion for " + player.getName() + "!"));
     }
 
     @Command("troll sounds")
