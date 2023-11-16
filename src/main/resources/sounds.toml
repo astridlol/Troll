@@ -1,3 +1,7 @@
 [[sounds]]
 name = "Explosion"
 key = "entity.generic.explode"
+
+[[sounds]]
+name = "Ender Dragon death"
+key = "entity.ender_dragon.death"
